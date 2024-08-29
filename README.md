@@ -1,3 +1,7 @@
+### 29-08-2024 Home Assignment
+- Start at 08:26 PM
+- Stop at 11:44 PM
+
 # pwa-frontend
 
 This template should help get you started developing with Vue 3 in Vite.

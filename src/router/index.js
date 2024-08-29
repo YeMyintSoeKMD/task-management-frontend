@@ -1,6 +1,7 @@
 import { createRouter, createWebHistory } from 'vue-router'
 import Index from '@/views/Index.vue'
-import Blog from '@/views/Blog.vue'
+import Tasks from '@/views/Tasks.vue'
+import Task from '@/views/Task.vue'
 import About from '@/views/About.vue'
 import Offline from '@/views/Offline.vue'
 
@@ -18,9 +19,14 @@ const router = createRouter({
       component: About
     },
     {
-      path: '/blogs/:id',
-      name: 'blog',
-      component: Blog,
+      path: '/tasks',
+      name: 'tasks',
+      component: Tasks
+    },
+    {
+      path: '/tasks/:id',
+      name: 'task',
+      component: Task,
       props: true
     },
     {
