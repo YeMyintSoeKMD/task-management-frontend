@@ -29,7 +29,7 @@
                 <div class="grid grid-cols-1 md:grid-cols-2 gap-2">
                     <div v-for="task in filteredTasks" :key="task.id"
                         class="p-6 bg-white border border-gray-200 rounded-lg dark:bg-gray-800 dark:border-gray-700"
-                        :class="{ 'bg-pink-50 border-0': task.deleted_at }">
+                        :class="{ 'bg-pink-100 border-0': task.deleted_at }">
                         <h5 class="mb-2 text-2xl font-bold tracking-tight text-gray-900 dark:text-white">{{
                             task.title }}</h5>
                         <p class="mb-3 font-normal text-gray-700 dark:text-gray-400">{{ task.description }}</p>

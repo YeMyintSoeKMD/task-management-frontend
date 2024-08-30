@@ -23,8 +23,8 @@ export const useTaskStore = defineStore('task', () => {
     try {
       const res = await axiosInstance.get("/tasks");
       if(res.status === 200){
-        tasks.value = res.data.data
-        filteredTasks.value = res.data.data
+        tasks.value = res.data.data.data
+        filteredTasks.value = res.data.data.data
       }
     } catch (error) {
       console.log(error.response.data);
