@@ -17,14 +17,14 @@ export const useTaskStore = defineStore('task', () => {
 
 
   /* Get tasks */
+  const q = ref('')
   const tasks = ref([])
-  const filteredTasks = ref([])
-  const getTasks = async () => {
+
+  const getTasks = async (page = 1) => {
     try {
-      const res = await axiosInstance.get("/tasks");
+      const res = await axiosInstance.get(`/tasks?q=${q.value}&page=${page}`);
       if(res.status === 200){
-        tasks.value = res.data.data.data
-        filteredTasks.value = res.data.data.data
+        tasks.value = res.data.data
       }
     } catch (error) {
       console.log(error.response.data);
@@ -109,52 +109,18 @@ export const useTaskStore = defineStore('task', () => {
   /**
    * Filtered by category
   */
- const filteredByCategory = (e) => {
-  const categoryId = e.target.value
-  filteredTasks.value = tasks.value.filter(task => {
-    if(categoryId) {
-      return task.category_id == categoryId
-    }else{
-      return task
-    }
-  })
- }
 
   /**
    * Filtered by trashed or not
   */
- const filteredByType = (e) => {
-  const type = e.target.value
-  filteredTasks.value = tasks.value.filter(task => {
-    if(type === 'active') {
-      return task.deleted_at === null
-    }else if(type === 'trashed'){
-      return task.deleted_at !== null
-    }else{
-      return task
-    }
-  })
- }
 
   /**
    * Sort by asc or desc
   */
- const sortingByAD = (e) => {
-  const sortType = e.target.value;  
-  // Copy the tasks array to avoid mutating the original array
-  const tasksCopy = [...tasks.value];  
-  if (sortType === 'asc') {
-    tasksCopy.sort((a, b) => a.id - b.id);
-  } else {
-    tasksCopy.sort((a, b) => b.id - a.id);
-  }
-  filteredTasks.value = tasksCopy;
- }
 
   return { 
     getTasks,
     tasks,
-    filteredTasks,
 
     getTask,
     task,
@@ -167,9 +133,5 @@ export const useTaskStore = defineStore('task', () => {
     updateTask,
 
     deleteTask,
-
-    filteredByCategory,
-    filteredByType,
-    sortingByAD
   }
 })

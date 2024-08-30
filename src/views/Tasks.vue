@@ -5,20 +5,20 @@
             <div class="container mx-auto px-5">
                 <!-- Filtering  -->
                 <div class="flex gap-x-1 sm:gap-x-5 lg:w-2/3 xl:w-1/3">
-                    <select @change="filteredByType"
+                    <select @change=""
                         class="bg-gray-50 border border-gray-300 text-gray-900 mb-6 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500">
                         <option value="">Type Filter</option>
                         <option value="active">Active</option>
                         <option value="trashed">Trashed</option>
                     </select>
-                    <select @change="filteredByCategory"
+                    <select @change=""
                         class="bg-gray-50 border border-gray-300 text-gray-900 mb-6 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500">
                         <option value="">Category Filter</option>
                         <template v-for="category in categories" :key="category.id">
                             <option :value="category.id">{{ category.name }}</option>
                         </template>
                     </select>
-                    <select @change="sortingByAD"
+                    <select @change=""
                         class="bg-gray-50 border border-gray-300 text-gray-900 mb-6 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500">
                         <option value="desc">DESC</option>
                         <option value="asc">ASC</option>
@@ -27,9 +27,9 @@
 
                 <!-- Tasks List -->
                 <div class="grid grid-cols-1 md:grid-cols-2 gap-2">
-                    <div v-for="task in filteredTasks" :key="task.id"
+                    <div v-for="task in tasks.data" :key="task.id"
                         class="p-6 bg-white border border-gray-200 rounded-lg dark:bg-gray-800 dark:border-gray-700"
-                        :class="{ 'bg-pink-100 border-0': task.deleted_at }">
+                        :class="{ 'border-pink-200 bg-pink-50': task.deleted_at }">
                         <h5 class="mb-2 text-2xl font-bold tracking-tight text-gray-900 dark:text-white">{{
                             task.title }}</h5>
                         <p class="mb-3 font-normal text-gray-700 dark:text-gray-400">{{ task.description }}</p>
@@ -61,7 +61,7 @@
                             </div>
 
                             <RouterLink :to="{ name: 'Task', params: { id: task.id } }"
-                                class="inline-flex items-center px-3 py-2 text-sm font-medium text-center text-white bg-blue-700 rounded-full sm:rounded-lg hover:bg-blue-800 focus:ring-4 focus:outline-none focus:ring-blue-300 dark:bg-blue-600 dark:hover:bg-blue-700 dark:focus:ring-blue-800">
+                                class="inline-flex items-center px-3 py-2 text-sm font-medium text-center bg-blue-100 rounded-full sm:rounded-lg hover:bg-blue-200 focus:ring-4 focus:outline-none focus:ring-gray-300">
                                 Read more
                                 <svg class="rtl:rotate-180 w-3.5 h-3.5 ms-2" aria-hidden="true"
                                     xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 14 10">
@@ -71,6 +71,11 @@
                             </RouterLink>
                         </div>
                     </div>
+                </div>
+
+                <!-- Pagination  -->
+                <div class="laravel-vue-pagination flex justify-start mt-5">
+                    <TailwindPagination :data="tasks" :limit="5" @pagination-change-page="getTasks" />
                 </div>
 
                 <!-- Task Edit Modal  -->
@@ -136,8 +141,9 @@
 
 <script setup>
 import Navbar from '@/components/Navbar.vue';
+import { TailwindPagination } from 'laravel-vue-pagination';
 import { storeToRefs } from 'pinia'
-import { ref, onMounted, reactive, onUpdated } from 'vue';
+import { ref, onMounted, onUpdated } from 'vue';
 import { RouterLink } from 'vue-router';
 
 /* Using auth store */
@@ -149,8 +155,8 @@ const { authUser } = storeToRefs(authStore)
 /* Using task store */
 import { useTaskStore } from '@/stores/task';
 const taskStore = useTaskStore()
-const { getTasks, deleteTask, updateTask, filteredByCategory, filteredByType, sortingByAD } = taskStore
-const { editId, editForm, filteredTasks } = storeToRefs(taskStore)
+const { getTasks, deleteTask, updateTask } = taskStore
+const { editId, editForm, tasks } = storeToRefs(taskStore)
 
 /* Using category store */
 import { useCategoryStore } from '@/stores/category';
@@ -187,4 +193,4 @@ onUpdated(() => {
 })
 </script>
 
-<style lang="scss" scoped></style>
+<style scoped></style>

@@ -1,3 +1,12 @@
 @tailwind base;
 @tailwind components;
 @tailwind utilities;
+
+
+/* laravel vue pagination  */
+div.laravel-vue-pagination nav button {
+    /* border: 1px solid #6366f1; */
+    padding: 4px 10px;
+    border-radius: 4px;
+    margin: 0 2px;
+}
