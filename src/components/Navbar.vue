@@ -17,7 +17,7 @@
                 <span class="sr-only">Close menu</span>
             </button>
             <div class="my-3">
-                <form @submit.prevent="storeTask(form)">
+                <form @submit.prevent="storeTask(authUser.id)">
                     <div class="mb-3">
                         <label for="title"
                             class="block mb-2 text-sm font-medium text-gray-900 dark:text-white">Title</label>
@@ -109,11 +109,21 @@ import { storeToRefs } from 'pinia'
 import { onMounted } from 'vue';
 import { RouterLink } from 'vue-router';
 
-const store = useTaskStore()
-const { form } = storeToRefs(store)
-const { storeTask } = store
+/* Using auth store */
+import { useAuthStore } from '@/stores/auth';
+const authStore = useAuthStore()
+const { getAuthUser } = authStore
+const { authUser } = storeToRefs(authStore)
 
-onMounted(() => { })
+/* Using task store */
+const taskStore = useTaskStore()
+const { form } = storeToRefs(taskStore)
+const { storeTask } = taskStore
+
+onMounted(() => {
+
+})
+
 
 </script>
 
