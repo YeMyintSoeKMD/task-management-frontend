@@ -3,18 +3,7 @@
 - Stop at 11:44 PM
 ### 30-08-2024 Home Assignment
 - Start at 01:19 PM
-
-# pwa-frontend
-
-This template should help get you started developing with Vue 3 in Vite.
-
-## Recommended IDE Setup
-
-[VSCode](https://code.visualstudio.com/) + [Volar](https://marketplace.visualstudio.com/items?itemName=Vue.volar) (and disable Vetur).
-
-## Customize configuration
-
-See [Vite Configuration Reference](https://vitejs.dev/config/).
+- Finished at 11:58 PM
 
 ## Project Setup
 
