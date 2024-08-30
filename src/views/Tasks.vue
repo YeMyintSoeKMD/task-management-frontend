@@ -4,25 +4,42 @@
         <section id="tasks" class="mt-24">
             <div class="container mx-auto px-5">
                 <!-- Filtering  -->
-                <div class="flex gap-x-1 sm:gap-x-5 lg:w-2/3 xl:w-1/3">
-                    <select @change=""
-                        class="bg-gray-50 border border-gray-300 text-gray-900 mb-6 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500">
-                        <option value="">Type Filter</option>
-                        <option value="active">Active</option>
-                        <option value="trashed">Trashed</option>
-                    </select>
-                    <select @change=""
-                        class="bg-gray-50 border border-gray-300 text-gray-900 mb-6 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500">
-                        <option value="">Category Filter</option>
-                        <template v-for="category in categories" :key="category.id">
-                            <option :value="category.id">{{ category.name }}</option>
-                        </template>
-                    </select>
-                    <select @change=""
-                        class="bg-gray-50 border border-gray-300 text-gray-900 mb-6 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500">
-                        <option value="desc">DESC</option>
-                        <option value="asc">ASC</option>
-                    </select>
+                <div id="filtering" class="grid grid-col-1 md:grid-cols-2 gap-x-3 gap-y-2">
+                    <div class="flex items-start gap-x-1 sm:gap-x-5">
+                        <select @change="filteredBySoftdelete"
+                            class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500">
+                            <option value="">Type</option>
+                            <option value="no">Active</option>
+                            <option value="yes">Trashed</option>
+                        </select>
+                        <select @change="filteredByCategory"
+                            class="bg-gray-50 border border-gray-300 text-gray-900 text-xs md:text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500">
+                            <option value="">Category</option>
+                            <template v-for="category in categories" :key="category.id">
+                                <option :value="category.id">{{ category.name }}</option>
+                            </template>
+                        </select>
+                        <select @change="filteredByAscDesc"
+                            class="bg-gray-50 border border-gray-300 text-gray-900 text-xs md:text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500">
+                            <option value="">Old/New</option>
+                            <option value="desc">Newest</option>
+                            <option value="asc">Oldest</option>
+                        </select>
+                    </div>
+                    <div>
+                        <div class="relative mb-6">
+                            <div class="absolute inset-y-0 start-0 flex items-center ps-3.5 pointer-events-none">
+                                <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24"
+                                    stroke-width="1.5" stroke="currentColor" class="size-4">
+                                    <path stroke-linecap="round" stroke-linejoin="round"
+                                        d="m21 21-5.197-5.197m0 0A7.5 7.5 0 1 0 5.196 5.196a7.5 7.5 0 0 0 10.607 10.607Z" />
+                                </svg>
+                            </div>
+                            <input type="text" v-model="q" @input="search" id="input-group-1"
+                                class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full ps-10 p-2.5  dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500"
+                                placeholder="Search">
+                        </div>
+                    </div>
                 </div>
 
                 <!-- Tasks List -->
@@ -123,9 +140,17 @@
                                 <div class="mb-3">
                                     <label for="title"
                                         class="block mb-2 text-sm font-medium text-gray-900 dark:text-white">Category</label>
-                                    <input type="text" v-model="editForm.category_id" id="title"
+                                    <!-- <input type="text" v-model="editForm.category_id" id="title"
                                         class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500"
-                                        required />
+                                        required /> -->
+                                    <select v-model="editForm.category_id" id="category"
+                                        class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500">
+                                        <option value="">Choose a category</option>
+                                        <template v-for="category in categories" :key="category.id">
+                                            <option :value="category.id">{{ category.name }}
+                                            </option>
+                                        </template>
+                                    </select>
                                 </div>
                                 <button type="submit"
                                     class="text-white bg-blue-700 hover:bg-blue-800 w-full focus:ring-4 focus:ring-blue-300 font-medium rounded-lg text-sm px-5 py-2.5 mb-2 dark:bg-blue-600 dark:hover:bg-blue-700 focus:outline-none dark:focus:ring-blue-800 block">Update</button>
@@ -155,8 +180,8 @@ const { authUser } = storeToRefs(authStore)
 /* Using task store */
 import { useTaskStore } from '@/stores/task';
 const taskStore = useTaskStore()
-const { getTasks, deleteTask, updateTask } = taskStore
-const { editId, editForm, tasks } = storeToRefs(taskStore)
+const { getTasks, deleteTask, updateTask, search, filteredByCategory, filteredBySoftdelete, filteredByAscDesc } = taskStore
+const { editId, editForm, tasks, q } = storeToRefs(taskStore)
 
 /* Using category store */
 import { useCategoryStore } from '@/stores/category';

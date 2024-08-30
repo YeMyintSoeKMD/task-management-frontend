@@ -1,5 +1,6 @@
 import { ref, reactive } from 'vue'
 import { defineStore } from 'pinia'
+import debounce from 'lodash.debounce'
 import axiosInstance from '@/assets/axios-config'
 
 export const useTaskStore = defineStore('task', () => {
@@ -106,17 +107,64 @@ export const useTaskStore = defineStore('task', () => {
     }
   }
 
+    /**
+   * Live filter - Search by title and description
+  */
+  const search = debounce( async () => {
+    await getTasks()
+  }, 500)
+
   /**
    * Filtered by category
   */
-
+  const filteredByCategory = async (e) => {
+    try {
+      const page = 1
+      const res = await axiosInstance.get(`/tasks?q=${q.value}&category_id=${e.target.value}&page=${page}`);
+      if(res.status === 200){
+        tasks.value = res.data.data
+      }
+    } catch (error) {
+      console.log(error);
+    }
+  }
   /**
    * Filtered by trashed or not
   */
+  const filteredBySoftdelete = async (e) => {
+    try {
+      const trashed = e.target.value
+      if(trashed === '') {
+        getTasks()
+        return 
+      }
+      const res = await axiosInstance.get(`tasks/softdelete/filter?trashed=${trashed}`);
+      if(res.status === 200){
+        tasks.value = res.data.data
+      }
+    } catch (error) {
+      console.log(error);
+    }
+  }
 
   /**
    * Sort by asc or desc
   */
+  const filteredByAscDesc = async (e) => {
+    try {
+      const sort = e.target.value
+      if(sort === '') {
+        getTasks()
+        return 
+      }
+      const res = await axiosInstance.get(`tasks/asc-desc/sort?sort=${sort}`);
+      if(res.status === 200){
+        tasks.value = res.data.data
+      }
+    } catch (error) {
+      console.log(error);
+    }
+  }
 
   return { 
     getTasks,
@@ -133,5 +181,11 @@ export const useTaskStore = defineStore('task', () => {
     updateTask,
 
     deleteTask,
+
+    q,
+    search,
+    filteredByCategory,
+    filteredBySoftdelete,
+    filteredByAscDesc
   }
 })
