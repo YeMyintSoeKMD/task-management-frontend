@@ -38,6 +38,10 @@ export const useAuthStore = defineStore('auth', () => {
       'password': ''
     })
     const register = async () => {
+      if (!navigator.onLine) {
+        alert("Cannot register while offline. Please try again when you are online.");
+        return;
+      }
       try {
         const res = await axiosInstance.post("/register", registerForm);
         if(res.status === 201){
@@ -65,6 +69,10 @@ export const useAuthStore = defineStore('auth', () => {
       'password': ''
     })
     const login = async () => {
+      if (!navigator.onLine) {
+        alert("Cannot login while offline. Please try again when you are online.");
+        return;
+      }
       try {
         const res = await axiosInstance.post("/login", loginForm);
         if(res.status === 201){

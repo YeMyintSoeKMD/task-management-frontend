@@ -53,6 +53,10 @@ export const useTaskStore = defineStore('task', () => {
     'category_id': ''
   })
   const storeTask = async (authId) => {
+    if (!navigator.onLine) {
+      alert("Cannot create while offline. Please try again when you are online.");
+      return;
+    }
     form.user_id = authId
     try {
       const res = await axiosInstance.post("/tasks", form);
@@ -76,6 +80,10 @@ export const useTaskStore = defineStore('task', () => {
     'category_id': ''
   })
   const updateTask = async () => {
+    if (!navigator.onLine) {
+      alert("Cannot update while offline. Please try again when you are online.");
+      return;
+    }
     try {
       const res = await axiosInstance.put(`/tasks/${editId.value}`, editForm);
       if(res.status === 200){
@@ -111,6 +119,10 @@ export const useTaskStore = defineStore('task', () => {
    * Live filter - Search by title and description
   */
   const search = debounce( async () => {
+    if (!navigator.onLine) {
+      alert("Cannot search while offline. Please try again when you are online.");
+      return;
+    }
     await getTasks()
   }, 500)
 
@@ -118,6 +130,10 @@ export const useTaskStore = defineStore('task', () => {
    * Filtered by category
   */
   const filteredByCategory = async (e) => {
+    if (!navigator.onLine) {
+      alert("Cannot filter while offline. Please try again when you are online.");
+      return;
+    }
     try {
       const page = 1
       const res = await axiosInstance.get(`/tasks?q=${q.value}&category_id=${e.target.value}&page=${page}`);
@@ -132,6 +148,10 @@ export const useTaskStore = defineStore('task', () => {
    * Filtered by trashed or not
   */
   const filteredBySoftdelete = async (e) => {
+    if (!navigator.onLine) {
+      alert("Cannot filter while offline. Please try again when you are online.");
+      return;
+    }
     try {
       const trashed = e.target.value
       if(trashed === '') {
@@ -151,6 +171,10 @@ export const useTaskStore = defineStore('task', () => {
    * Sort by asc or desc
   */
   const filteredByAscDesc = async (e) => {
+    if (!navigator.onLine) {
+      alert("Cannot filter while offline. Please try again when you are online.");
+      return;
+    }
     try {
       const sort = e.target.value
       if(sort === '') {
