@@ -4,7 +4,7 @@ import axiosInstance from '@/assets/axios-config'
 
 export const useTaskStore = defineStore('task', () => {
   
-  /* Config */
+  /* Reseting form */
   const resetForm = (form) => {
     Object.assign(form, {
       title: '',

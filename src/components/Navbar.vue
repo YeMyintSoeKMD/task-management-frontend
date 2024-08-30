@@ -61,7 +61,14 @@
                     <span class="self-center text-2xl font-semibold whitespace-nowrap dark:text-white">Task</span>
                 </RouterLink>
                 <!-- Right - Icons -->
-                <div class="flex items-center md:order-2 space-x-3 rtl:space-x-reverse">
+                <div class="flex items-center md:order-2 space-x-5 rtl:space-x-reverse">
+                    <button @click="logOut">
+                        <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5"
+                            stroke="currentColor" class="size-8">
+                            <path stroke-linecap="round" stroke-linejoin="round"
+                                d="M15.75 9V5.25A2.25 2.25 0 0 0 13.5 3h-6a2.25 2.25 0 0 0-2.25 2.25v13.5A2.25 2.25 0 0 0 7.5 21h6a2.25 2.25 0 0 0 2.25-2.25V15m3 0 3-3m0 0-3-3m3 3H9" />
+                        </svg>
+                    </button>
                     <button type="button" data-drawer-target="blog-creation-drawer"
                         data-drawer-show="blog-creation-drawer" data-drawer-placement="right"
                         aria-controls="blog-creation-drawer"
@@ -71,32 +78,6 @@
                             <path stroke-linecap="round" stroke-linejoin="round" d="M12 4.5v15m7.5-7.5h-15" />
                         </svg>
                     </button>
-                    <button data-collapse-toggle="navbar-sticky" type="button"
-                        class="inline-flex items-center p-2 w-10 h-10 justify-center text-sm text-gray-500 rounded-lg md:hidden hover:bg-gray-100 focus:outline-none focus:ring-2 focus:ring-gray-200 dark:text-gray-400 dark:hover:bg-gray-700 dark:focus:ring-gray-600"
-                        aria-controls="navbar-sticky" aria-expanded="false">
-                        <span class="sr-only">Open main menu</span>
-                        <svg class="w-5 h-5" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" fill="none"
-                            viewBox="0 0 17 14">
-                            <path stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
-                                d="M1 1h15M1 7h15M1 13h15" />
-                        </svg>
-                    </button>
-                </div>
-                <!-- Center - Menu  -->
-                <div class="items-center justify-between hidden w-full md:flex md:w-auto md:order-1" id="navbar-sticky">
-                    <ul
-                        class="flex flex-col p-4 md:p-0 mt-4 font-medium border border-gray-100 rounded-lg bg-gray-50 md:space-x-8 rtl:space-x-reverse md:flex-row md:mt-0 md:border-0 md:bg-white dark:bg-gray-800 md:dark:bg-gray-900 dark:border-gray-700">
-                        <li>
-                            <RouterLink to="/"
-                                class="block py-2 px-3 text-gray-900 hover:text-blue-500 rounded md:bg-transparent md:p-0 md:dark:text-blue-500"
-                                aria-current="page">Home</RouterLink>
-                        </li>
-                        <li>
-                            <RouterLink to="/about"
-                                class="bblock py-2 px-3 text-gray-900 hover:text-blue-500 rounded md:bg-transparent md:p-0 md:dark:text-blue-500">
-                                About</RouterLink>
-                        </li>
-                    </ul>
                 </div>
             </div>
         </nav>
@@ -112,8 +93,8 @@ import { RouterLink } from 'vue-router';
 /* Using auth store */
 import { useAuthStore } from '@/stores/auth';
 const authStore = useAuthStore()
-const { getAuthUser } = authStore
 const { authUser } = storeToRefs(authStore)
+const { getAuthUser, logOut } = authStore
 
 /* Using task store */
 const taskStore = useTaskStore()

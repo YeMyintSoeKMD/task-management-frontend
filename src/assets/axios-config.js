@@ -8,12 +8,11 @@ const axiosInstance = axios.create({
 
 // Add an interceptor to set the Authorization header
 axiosInstance.interceptors.request.use((config) => {
-//   const token = localStorage.getItem('taskToken');
-  const token = '1|Hnz4A0qoB4carxlZS0Ox9X3ju3qR1jDcmuAIgUWtb8e0f730';
+  const token = localStorage.getItem('taskToken');
   if (token) {
     config.headers['Authorization'] = `Bearer ${token}`;
   }else {
-    console.log('no token');
+    console.log('no token - from config');
   }
   return config;
 });

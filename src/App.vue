@@ -1,6 +1,6 @@
 <template>
   <div>
-    <div class="mt-20"></div>
+    <!-- <div class="mt-20"></div> -->
     <RouterView />
   </div>
 </template>
