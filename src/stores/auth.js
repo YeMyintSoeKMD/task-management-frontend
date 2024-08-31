@@ -86,8 +86,11 @@ export const useAuthStore = defineStore('auth', () => {
           // store token in the localStorange
           localStorage.setItem('taskToken', res.data.data)
 
-          // redirect to tasks
+          // Redirect to tasks with hard refresh
           router.push('/tasks')
+          .then(() => {
+            window.location.href = window.location.href.split('?')[0];
+          });
         }
       } catch (error) {
         loginFormErr.value = error.response.data.message
@@ -99,6 +102,10 @@ export const useAuthStore = defineStore('auth', () => {
    * Logout
   */
   const logOut = async () => {
+    if (!navigator.onLine) {
+      alert("Cannot logout while offline. Please try again when you are online.");
+      return;
+    }
     if(!confirm('Are you sure to logout?')) {
       return
     }

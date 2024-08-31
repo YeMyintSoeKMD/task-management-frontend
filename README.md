@@ -1,5 +1,5 @@
 ### Project Info
-Simple Task Management Application for managing tasks with token based authentication. Front focus, fetching APIs for a task app from the SERVER.
+Simple Task Management Application for managing tasks with token based authentication. Frontend focus, fetching APIs for a task app from the SERVER.
 
 #### Technologies Used
 1. Vue.js 3
@@ -11,12 +11,13 @@ Simple Task Management Application for managing tasks with token based authentic
 7. lodash.debounce for delay searching
 
 #### Features Included
-1. Authentication (Storing token in localhost)
+1. Authentication (Storing token in localStorage)
     - Register
     - Login
     - Logout
 2. tasks CRUD and Filtering/Sorting
     - CRUD
+    - Task detail page
     - Searching by tasks' title, and desctription
     - Filtering by softdelete or not
     - Filtering by oldest or newest
@@ -41,3 +42,4 @@ Simple Task Management Application for managing tasks with token based authentic
 - Start at 01:19 PM
 - Finished at 11:58 PM
 - README modification at 1:05 AM
+- Late Modification on 31 Aug 24 (Service Worker Improvement, README) 

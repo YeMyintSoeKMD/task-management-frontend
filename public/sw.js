@@ -12,6 +12,9 @@ self.addEventListener('install', e => {
         .then(cache => {
             cache.addAll(PRE_CACHE_ASSETS)
         })
+        .then(() => {
+            self.skipWaiting();
+        })
     )
 })
 
@@ -30,6 +33,15 @@ self.addEventListener('activate', e => {
             )
         })
     )
+    // Claim control of all clients immediately
+    self.clients.claim(); 
+
+    // Reload the page
+    e.waitUntil(
+        self.clients.matchAll({ type: 'window' }).then(clients => {
+            clients.forEach(client => client.navigate(client.url));
+        })
+    );
 })
 
 /* Fetching */
@@ -50,6 +62,17 @@ self.addEventListener('fetch', e => {
             })
             return res
         })
-        .catch(() => caches.match(e.request).then(res => res))
+        .catch(() => 
+            caches.match(e.request).then(res => {
+                if (res) {
+                    return res;
+                } else {
+                    // If not found in cache, redirect to "/"
+                    return caches.match('/').then(homepage => {
+                        return homepage || fetch('/');
+                    });
+                }
+            })
+        )
     )
 })

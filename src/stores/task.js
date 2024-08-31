@@ -106,7 +106,7 @@ export const useTaskStore = defineStore('task', () => {
     try {
       if(confirm('Are you sure?')) {
         const res = await axiosInstance.delete(`/tasks/${id}`);
-        if(res.status === 200){
+        if(res.status === 204){
           getTasks();
         }
       }
